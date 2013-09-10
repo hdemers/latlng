@@ -18,8 +18,8 @@ from flask import Flask, jsonify
 from werkzeug.exceptions import default_exceptions
 from werkzeug.exceptions import HTTPException
 
-from cloudly import logger
-from cloudly.notify import notify as cloudly_notify
+#from cloudly import logger
+#from cloudly.notify import notify as cloudly_notify
 
 FORMAT = "%(asctime)s] %(levelname)s %(module)s %(funcName)s: %(message)s"
 
@@ -29,7 +29,7 @@ app = Flask(__name__)
 # Debugging
 app.debug = True
 app.debug_log_format = FORMAT
-log = logger.init(__name__)
+#log = logger.init(__name__)
 
 # Set a 'SECRET_KEY' to enable the Flask session cookies
 app.config['SECRET_KEY'] = os.environ.get("WEBAPP_SESSION_SECRET_KEY",
@@ -39,8 +39,8 @@ app.config['SECRET_KEY'] = os.environ.get("WEBAPP_SESSION_SECRET_KEY",
 # Make this app a JSON app.
 # Inspired from cf. http://flask.pocoo.org/snippets/83/
 def make_json_error(ex):
-    log.error(ex)
-    log.error(traceback.format_exc())
+    #log.error(ex)
+    #log.error(traceback.format_exc())
     message = ex.description if isinstance(ex, HTTPException) else str(ex)
     message = message.replace("<p>", "").replace("</p>", "") if message else ""
     code = ex.code if isinstance(ex, HTTPException) else 500
@@ -59,8 +59,8 @@ for code in default_exceptions.iterkeys():
 def notify(exception, code=None):
     if not code:
         code = exception.code if isinstance(exception, HTTPException) else 500
-    cloudly_notify("Exception: {}".format(code), "{}\n\n{}".format(
-        exception, traceback.format_exc(exception)))
+    #cloudly_notify("Exception: {}".format(code), "{}\n\n{}".format(
+        #exception, traceback.format_exc(exception)))
 
 
 import latlng.views  # noqa
