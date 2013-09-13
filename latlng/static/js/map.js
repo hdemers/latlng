@@ -33,16 +33,17 @@ function ($, _, L) {
       enableHighAccuracy: true
     });
 
-    exports.mark = function (location, iconUrl) {
-      var icon, marker;
-      if (_.has(markers, iconUrl)) {
-        markers[iconUrl].setLatLng(location.latlng);
+    exports.mark = function (location, ident, iconUrl) {
+      var marker, icon = L.icon({iconUrl: iconUrl, iconSize: [25, 25]});
+
+      if (_.has(markers, ident)) {
+        markers[ident].setLatLng(location.latlng);
+        markers[ident].setIcon(icon);
         //marker.setAccuracy(location.accuracy);
       }
       else {
-        icon = L.icon({iconUrl: iconUrl});
         marker = L.marker(location.latlng, {icon: icon});
-        markers[iconUrl] = marker;
+        markers[ident] = marker;
         marker.addTo(map);
         //marker.setAccuracy(location.accuracy);
         exports.setViewAll();
