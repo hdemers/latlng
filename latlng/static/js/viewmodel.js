@@ -4,8 +4,8 @@
 define(["knockout"],
 function (ko) {
   var exports = {
-    sender_email: ko.observable("hugues.demers@gmail.com"),
-    recipient_email: ko.observable("hdemers@gmail.com")
+    senderEmail: ko.observable(),
+    recipientEmail: ko.observable()
   };
   return exports;
 });
