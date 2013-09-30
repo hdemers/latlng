@@ -18,9 +18,10 @@ function ($, _) {
     
     console.log("Connecting to peer server with id '" + ownId + "'");
     // Connect to the PeerServer Cloud
-    peerInstance = new Peer(myId,
-      {key: appConfig.peerserverApiKey}
-    );
+    peerInstance = new Peer(myId, {
+      key: appConfig.peerserverApiKey,
+      debug: 3
+    });
     
     peerInstance.on('error', function (error) {
       console.log("Peer error", error);
@@ -35,15 +36,13 @@ function ($, _) {
     //};
   };
 
-
-  exports.add = function (onData, metadata, identity) {
+  exports.add = function (onData, identity) {
     var ident = identity || Math.random().toString(36).substring(7);
 
     pool[ident] = {
       ident: ident,
       conn: null,
-      onData: onData,
-      metadata: metadata || {}
+      onData: onData
     };
     return ident;
   };
@@ -60,9 +59,7 @@ function ($, _) {
 
   exports.connect = function (peerId, onData, ident) {
     var conn;
-    console.log("Trying to connect to", peerId);
-
-    exports.add(onData, {}, ident);
+    exports.add(onData, ident);
     conn = peerInstance.connect(peerId,
       {serialization: "json", metadata: ident}
     );
@@ -72,7 +69,7 @@ function ($, _) {
   setupConnection = function (conn) {
     var peer = null, deferred = new $.Deferred();
     
-    console.log("Peer", conn.peer, "is connecting to us.");
+    console.log("Trying to set-up connection with peer id", conn.peer);
     peer = exports.get(conn.metadata);
     if (peer === null) {
       console.log("Peer", conn.peer, "is not already part of the pool.");
@@ -80,24 +77,24 @@ function ($, _) {
       conn.close();
       return;
     }
-    console.log("Accepted connection for", peer.ident);
+    console.log("Accepted connection", peer.ident, " peer id:", conn.peer);
 
     // Attach event handlers
     conn.on('open', function () {
       // Store the connection
       peer.conn = conn;
-      console.log("Connection opened with", conn.peer);
-      deferred.resolve();
-      onOpen(peer.metadata);
+      console.log("Connection opened with", peer.ident);
+      deferred.resolve(peer.ident);
+      onOpen(peer.ident);
     });
 
     conn.on('data', function (data) {
-      peer.onData(peer.metadata, data);
+      peer.onData(peer.ident, data);
       console.log('Got data:', data);
     });
 
     conn.on('close', function () {
-      console.log("Peer", conn.peer, "has closed connection");
+      console.log("Peer", peer.ident, "has closed connection");
       //delete pool[conn.metadata];
     });
 
@@ -113,7 +110,7 @@ function ($, _) {
     _.each(pool, function (peer) {
       if (peer.conn !== null && peer.conn.open) {
         peer.conn.send(message);
-        console.log("Sent message to", peer.conn.peer, "(", peer.ident, ")");
+        console.log("Sent message to", peer.ident);
       }
     });
   };
