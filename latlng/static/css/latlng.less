@@ -29,20 +29,24 @@ html, body, #map {
 .user {
     border-radius: 17px;
     /*background: #a82c37;*/
-    background: #e1bb18;
-    /*background: #000000;*/
+    /*background: #e1bb18;*/
+    background: #000000;
     /*position: relative;*/
     /*overflow: hidden;*/
     /*width: 30px;*/
     /*height: 30px;*/
 }
 
-.user img {
-    margin: 2px 2px;
+.user span.glyphicon {
+    font-size: 20px;
+    margin: 3px 0px 0px 7px;
+    color: #fff;
 }
 
-span.glyphicon {
-    font-size: 20px;
-    margin: 2px 0px 0px 7px;
-    color: #fff;
+.user span.glyphicon.nonreporting {
+    color: #a82c37;
+}
+
+.user span.glyphicon.nonmoving {
+    color: #e1bb18;
 }

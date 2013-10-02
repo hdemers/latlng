@@ -44,7 +44,8 @@ function ($, _, ko, map, viewmodel, peershare) {
       ident: my_peer_id,
       location: {
         accuracy: null,
-        latlng: []
+        latlng: [],
+        type: null
       }
     };
     viewmodel.update(myself.ident, myself);
@@ -56,6 +57,7 @@ function ($, _, ko, map, viewmodel, peershare) {
       console.log("Received location data.");
       myself.location.latlng = [location.latlng.lat, location.latlng.lng];
       myself.location.accuracy = location.accuracy;
+      myself.location.type = location.type;
       myself.email = viewmodel.senderEmail();
       viewmodel.update(myself.ident, myself);
       sendLocation(myself);
@@ -78,7 +80,7 @@ function ($, _, ko, map, viewmodel, peershare) {
 
     if (peer.email() !== null && peer.email() !== "") {
       iconUrl = "http://www.gravatar.com/avatar/" +
-        CryptoJS.MD5(peer.email()) + "?s=30&d=404";
+        CryptoJS.MD5(peer.email()) + "?s=34&d=404";
     }
     if (peer.location.latlng().length === 2) {
       location = {

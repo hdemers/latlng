@@ -12,7 +12,8 @@ require({
     "bootstrap": "//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min",
     "leaflet": "http://cdn.leafletjs.com/leaflet-0.6.4/leaflet",
     "peerjs": "http://cdn.peerjs.com/0.3/peer",
-    "md5": "http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5"
+    "md5": "http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/md5",
+    "radio": "other/radio.min"
   },
   shim: {
     'underscore': {
