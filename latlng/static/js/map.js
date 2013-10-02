@@ -14,7 +14,10 @@ function ($, _, L) {
 
   exports.initialize = function (element, options) {
     console.log("Initializing map.");
-    var cloudmade,
+    var tileLayer,
+      cloudmadeUrl = 'http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png',
+      osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      mapboxUrl = 'http://{s}.tiles.mapbox.com/v3/openplans.map-g4j0dszr/{z}/{x}/{y}.png',
       defaults = {
         locate: true,
         heartbeat: true
@@ -27,11 +30,14 @@ function ($, _, L) {
       map.locate();
     };
 
-    cloudmade = L.tileLayer(
-      'http://{s}.tile.cloudmade.com/' + appConfig.cloudmadeApiKey +
-      '/997/256/{z}/{x}/{y}.png', {
+    tileLayer = L.tileLayer(cloudmadeUrl, {
+        key: appConfig.cloudmadeApiKey,
+        //styleId: 22677,
+        styleId: 79839,
+        //styleId: 999,
         maxZoom: 18
       }).addTo(map);
+
 
     map.setView([35, -50], 3);
 
@@ -59,7 +65,15 @@ function ($, _, L) {
   };
 
   exports.mark = function (location, ident, iconUrl) {
-    var marker, icon = L.icon({iconUrl: iconUrl, iconSize: [25, 25]});
+    var marker,
+      html = iconUrl ?
+        '<img class="img-circle" src=' + iconUrl + '></img>':
+        '<span class="glyphicon glyphicon-user"></span>',
+      icon = L.divIcon({
+      iconSize: [34, 34],
+      className: "user",
+      html: html
+    });
 
     if (_.has(markers, ident)) {
       markers[ident].setLatLng(location.latlng);

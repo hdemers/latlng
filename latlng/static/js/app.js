@@ -56,29 +56,29 @@ function ($, _, ko, map, viewmodel, peershare) {
       console.log("Received location data.");
       myself.location.latlng = [location.latlng.lat, location.latlng.lng];
       myself.location.accuracy = location.accuracy;
+      myself.email = viewmodel.senderEmail();
       viewmodel.update(myself.ident, myself);
-      sendLocation(myself.location);
+      sendLocation(myself);
     });
   };
 
-  sendLocation = function (location) {
-    if (location !== null) {
-      peershare.send({email: null, location: location});
+  sendLocation = function (data) {
+    if (data !== null) {
+      peershare.send(data);
     }
   };
 
   onOpen = function (peerIdent) {
     console.log("Sending location on open", myself.location);
-    sendLocation(myself.location);
+    sendLocation(myself);
   };
 
   viewmodel.updateMap = function (peer) {
-    var icon = "bluedot.png", location,
-      iconUrl = window.location.protocol + "//" + window.location.host +
-                "/static/img/" + icon;
-    if (peer.email() !== null) {
+    var location, iconUrl = null;
+
+    if (peer.email() !== null && peer.email() !== "") {
       iconUrl = "http://www.gravatar.com/avatar/" +
-        CryptoJS.MD5(peer.email()) + "?s=30";
+        CryptoJS.MD5(peer.email()) + "?s=30&d=404";
     }
     if (peer.location.latlng().length === 2) {
       location = {
@@ -87,7 +87,20 @@ function ($, _, ko, map, viewmodel, peershare) {
           lng: peer.location.latlng()[1]
         }
       };
-      map.mark(location, peer.ident(), iconUrl);
+
+      if (iconUrl === null) {
+        map.mark(location, peer.ident(), iconUrl);
+      }
+      else {
+        $.ajax({
+          url: iconUrl
+        }).done(function () {
+          map.mark(location, peer.ident(), iconUrl);
+        }).error(function () {
+          console.log("User has no gravatar.");
+          map.mark(location, peer.ident(), null);
+        });
+      }
     }
   };
 

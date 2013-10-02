@@ -16,8 +16,8 @@ function (ko, _, mapping, map) {
       return peer;
     }
   }, exports = {
-    senderEmail: ko.observable('hdemers@gmail.com'),
-    recipientEmail: ko.observable('hugues.demers@gmail.com'),
+    senderEmail: ko.observable(''),
+    recipientEmail: ko.observable(''),
     peers: mapping.fromJS([], peerMapping)
   };
 
