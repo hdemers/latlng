@@ -78,10 +78,10 @@ function ($, _, ko, map, viewmodel, peershare) {
   viewmodel.updateMap = function (peer) {
     var location, iconUrl = null;
 
-    if (peer.email() !== null && peer.email() !== "") {
-      iconUrl = "http://www.gravatar.com/avatar/" +
-        CryptoJS.MD5(peer.email()) + "?s=34&d=404";
-    }
+    //if (peer.email() !== null && peer.email() !== "") {
+      //iconUrl = "http://www.gravatar.com/avatar/" +
+        //CryptoJS.MD5(peer.email()) + "?s=34&d=404";
+    //}
     if (peer.location.latlng().length === 2) {
       location = {
         latlng: {
@@ -102,6 +102,20 @@ function ($, _, ko, map, viewmodel, peershare) {
           console.log("User has no gravatar.");
           map.mark(location, peer.ident(), null);
         });
+      }
+      if (peer.location.type() === "moving") {
+        $("#ident-" + peer.ident()).removeClass("nonreporting nonmoving");
+
+      }
+      else if (peer.location.type() === "cached") {
+        $("#ident-" + peer.ident())
+          .removeClass("nonreporting")
+          .addClass("nonmoving");
+      }
+      else if (peer.location.type() === "nonreporting") {
+        $("#ident-" + peer.ident())
+          .removeClass("nonmoving")
+          .addClass("nonreporting");
       }
     }
   };

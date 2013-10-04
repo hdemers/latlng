@@ -130,8 +130,9 @@ function ($, _, L, radio) {
         '<span class="glyphicon glyphicon-user"></span>',
       icon = L.divIcon({
       iconSize: [34, 34],
+      iconAnchor: [17, 44],
       className: "user",
-      html: html
+      html: html + '<div class="triangle-down" id="ident-' + ident + '"></div>'
     });
 
     if (_.has(markers, ident)) {
@@ -143,7 +144,6 @@ function ($, _, L, radio) {
       marker = L.marker(location.latlng, {icon: icon});
       markers[ident] = marker;
       marker.addTo(map);
-      //marker.setAccuracy(location.accuracy);
       setViewAll();
     }
   };

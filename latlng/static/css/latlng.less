@@ -4,6 +4,11 @@
 @import "base.css";
 @import "http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css";
 
+@usericon: white;
+@userbackground: #2d2d2d;
+@nonreporting: #a82c37;
+@nonmoving: #e1bb18;
+
 body {
     padding: 0;
     margin: 0;
@@ -28,25 +33,30 @@ html, body, #map {
 
 .user {
     border-radius: 17px;
-    /*background: #a82c37;*/
-    /*background: #e1bb18;*/
-    background: #000000;
-    /*position: relative;*/
-    /*overflow: hidden;*/
-    /*width: 30px;*/
-    /*height: 30px;*/
+    background: @userbackground;
 }
 
 .user span.glyphicon {
     font-size: 20px;
     margin: 3px 0px 0px 7px;
-    color: #fff;
+    color: @usericon;
+    height: 31px;
 }
 
-.user span.glyphicon.nonreporting {
-    color: #a82c37;
+.user div.nonreporting {
+    border-top-color: @nonreporting;
 }
 
-.user span.glyphicon.nonmoving {
-    color: #e1bb18;
+.user div.nonmoving {
+    border-top-color: @nonmoving
+}
+
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 10px solid @userbackground;
+    margin-left: 12px;
+    margin-top: 2px;
 }
